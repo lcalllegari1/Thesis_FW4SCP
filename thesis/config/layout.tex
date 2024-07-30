@@ -1,0 +1,123 @@
+\setlrmarginsandblock{3cm}{2cm}{*}
+\setulmarginsandblock{3cm}{3cm}{*}
+
+\OnehalfSpacing
+
+\setsecnumdepth{subsection}
+\settocdepth{subsection}
+
+\setheadfoot{\baselineskip}{0pt}
+\setheaderspaces{2cm}{*}{*}
+
+\makepagestyle{thesis}
+
+\makeevenhead{thesis}{\alt\thepage}{}{\alt\leftmark}
+\makeoddhead{thesis}{\alt\rightmark}{}{\alt\thepage}
+\makeheadrule{thesis}{\textwidth}{2\normalrulethickness}
+
+\pagestyle{thesis}
+
+\renewcommand{\chapnumfont}{\Huge\bfseries\alt}
+\renewcommand{\printchaptername}{}
+\renewcommand{\printchapternum}{}
+
+\renewcommand{\printchaptertitle}[1]{
+    \ifnum\value{chapter} > 0
+        \begin{minipage}{3.5cm}
+            \begin{tcolorbox}[
+                sharp corners,
+                colback = primary,
+                colframe = secondary,
+                boxrule = 0pt,
+                rightrule = 10pt,
+                width = 3.5cm,
+                height = 2cm,
+                valign = center,
+            ]
+                \fontsize{60pt}{0pt}\color{white}\alt\bfseries\thechapter
+            \end{tcolorbox}
+        \end{minipage}\hfill
+        \raisebox{-15pt}{\huge\bfseries\alt\color{primary}#1}\\[0pt]
+    \else
+        \centering
+        \raisebox{-15pt}{\huge\bfseries\alt\color{primary}#1}\\[0pt]
+    \fi
+}
+
+\setlength{\afterchapskip}{1cm}
+
+\setsecheadstyle{\Large\bfseries\alt}
+\setsubsecheadstyle{\large\bfseries\alt}
+\setsubsubsecheadstyle{\bfseries\alt}
+
+\makeatletter
+\renewcommand{\@seccntformat}[1]{
+    \textcolor{primary}{\csname the#1\endcsname}\quad
+}
+\makeatother
+
+\let\oldchapter\chapter
+\renewcommand{\chapter}[1]{
+    \oldchapter{#1}
+    \thispagestyle{empty}
+}
+
+\newcounter{defthmcnt}[chapter]
+
+\NewTcbTheorem[
+    number within = chapter,
+    use counter = defthmcnt
+] {defbox}{Definizione}{
+    enhanced,
+    sharp corners,
+    colframe = primary,
+    colback = primary!15,
+    boxrule = 0pt,
+    toprule = 2pt,
+    bottomrule = 2pt,
+    separator sign = .,
+    top = 4mm,
+    bottom = 3mm,
+    fonttitle = \alt\fontseries{mid}\selectfont,
+    attach boxed title to top text left = {yshift=-3mm},
+    boxed title style = {
+        sharp corners,
+        left = 1pt,
+        right = 1pt,
+        top = 1pt,
+        bottom = 1pt,
+        boxrule = 1pt,
+        colback = primary,
+        colframe = secondary,
+    },
+    breakable,
+}{def}
+
+\NewTcbTheorem[
+    number within = chapter,
+    use counter = defthmcnt
+] {thmbox}{Teorema}{
+    enhanced,
+    sharp corners,
+    colframe = primary,
+    colback = primary!15,
+    boxrule = 0pt,
+    toprule = 2pt,
+    bottomrule = 2pt,
+    separator sign = .,
+    top = 4mm,
+    bottom = 3mm,
+    fonttitle = \alt\fontseries{mid}\selectfont,
+    attach boxed title to top text left = {yshift=-3mm},
+    boxed title style = {
+        sharp corners,
+        left = 1pt,
+        right = 1pt,
+        top = 1pt,
+        bottom = 1pt,
+        boxrule = 1pt,
+        colback = primary,
+        colframe = secondary,
+    },
+    breakable,
+}{thm}
