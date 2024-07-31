@@ -29,7 +29,7 @@ sviluppo di algoritmi euristici, con la finalità di ottenere soluzioni accettab
 
 \section{Problemi di Ottimizzazione}
 
-un problema di ottimizzazione \( \mathcal{P} \) può essere definito con la formulazione generale
+Un problema di ottimizzazione \( \mathcal{P} \) può essere definito con la formulazione generale
 \begin{equation}\label{eq:opt_prob}
     \mathcal{P}\colon
     \begin{cases}
@@ -74,6 +74,54 @@ Calcolare il massimo di una funzione
 \).
 Di conseguenza, nel seguito possiamo limitarci a studiare i problemi di minimo senza perdere di generalità. Tutte le
 considerazioni saranno valide, eventualmente con opportune modifiche, anche per i problemi di massimo.
+\begin{defbox}{}{sol}
+    Sia \( \mathcal{P} \) un problema di ottimizzazione della forma presentata in \eqref{eq:opt_prob}. Ogni \( \vec{x}
+    \in D \) si dice soluzione di \( \mathcal{P} \). Una soluzione che soddisfi tutti i vincoli in \( \mathcal{S} \) si
+    dice ammissibile per \( \mathcal{P} \).
+\end{defbox}
+Per riferirci all'insieme di tutte le soluzioni ammissibili di un problema di ottimizzazione
+\(
+    \mathcal{P},
+\)
+utilizzeremo la notazione
+\(
+    F(\mathcal{P}).
+\)
+Il dominio \( \mathcal{D} \) fornisce una classificazione immediata dei problemi di ottimizzazione.
+
+\begin{itemize}
+    \item Se \( \mathcal{D} \) è un insieme discreto, allora il problema è detto di \textit{ottimizzazione discreta}.
+    \item Se \( \mathcal{D} \) è un insieme continuo, allora il problema è detto di \textit{ottimizzazione continua}.
+\end{itemize}
+Inoltre, nel caso particolare di un dominio
+\(
+    \mathcal{D}
+\)
+che sia un insieme discreto e finito, si parla di \textit{ottimizzazione combinatoria}
+\begin{defbox}{Soluzione Ottima}{optsol}
+    Sia \( \mathcal{P} \) un problema di ottimizzazione della forma presentata in \eqref{eq:opt_prob}. Una soluzione
+    ammissibile \( \vec{x^{\star}} \in F(\mathcal{P}) \) si dice ottima per \( \mathcal{P} \) se
+    \[
+        f(\vec{x^{\star}}) \leq f(\vec{x}) \quad \forall \vec{x} \in F(\mathcal{P}).
+    \]
+\end{defbox}
+Un problema di ottimizzazione \( \mathcal{P} \) si dice impossibile (\textit{infeasible}) quando
+\(
+    F(\mathcal{P}) = \varnothing.
+\)
+Diciamo invece che
+\(
+    \mathcal{P}
+\)
+è illimitato (\textit{unbounded}) quando non esiste alcun limite inferiore a \( f(\vec{x}) \), per \( \vec{x} \in
+F(\mathcal{P}) \). Se esiste una soluzione \( \vec{x^{\star}} \in F(\mathcal{P}) \) ottima, allora
+diciamo che \( \mathcal{P} \) ammette ottimo finito.
+
+La funzione \( f(\vec{x}) \) è chiamata funzione obiettivo e il valore \( f(\bar{\vec{x}}) \) è tipicamente noto come
+costo associato alla soluzione \( \bar{\vec{x}} \in F(\mathcal{P}) \).
+
+Infine, un problema di ottimizzazione si dice risolto quando si trova una soluzione ottima, e si dimostra che è tale,
+oppure quando si dimostra che il problema è impossibile o illimitato.
 
 \subsection{Restrizioni e Rilassamenti}
 
