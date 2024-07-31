@@ -125,15 +125,264 @@ oppure quando si dimostra che il problema è impossibile o illimitato.
 
 \subsection{Restrizioni e Rilassamenti}
 
+\begin{defbox}{Restrizione}{restr}
+    Sia \( \mathcal{P} \) un problema di ottimizzazione. Si definisce restrizione di \( \mathcal{P} \) un problema di
+    ottimizzazione \( \mathcal{P}' \) ottenuto da \( \mathcal{P} \) aggiungendo vincoli.
+\end{defbox}
+
+Intuitivamente, aggiungere vincoli ad un problema significa ridurre lo spazio delle sue soluzioni ammissibili.
+Formalmente, se \( \mathcal{P}' \) è una restrizione di \( \mathcal{P} \), allora \( F(\mathcal{P}') \subseteq
+F(\mathcal{P}) \). Di conseguenza, se \( \bar{\vec{x}} \) è una generica soluzione ammissibile per \( \mathcal{P}' \),
+ossia \( \bar{\vec{x}} \in F(\mathcal{P}')\), allora \( \bar{\vec{x}} \) è ammissibile per \( \mathcal{P} \), cioè \(
+\bar{\vec{x}} \in F(\mathcal{P}) \). Inoltre, è facile verificare che il costo associato a \( \bar{\vec{x}} \in
+F(\mathcal{P}') \) fornisce
+un limite superiore (\textit{upper bound}) al valore ottimo di \( \mathcal{P} \), ossia
+\(
+    f(\vec{x^{\star}}) \leq f(\vec{\bar{x}}),
+\)
+dove \( \vec{x^{\star}} \in F(\mathcal{P}) \) rappresenta una soluzione ottima per \( \mathcal{P} \).
+
+Infine, poiché \( F(\mathcal{P}') \subseteq F(\mathcal{P}) \), si dimostra immediatamente che se \( \mathcal{P} \) è
+impossibile, cioè \( F(\mathcal{P}) = \varnothing \), allora anche ogni sua restrizione \( \mathcal{P}' \) è
+impossibile, ossia \( F(\mathcal{P}') = \varnothing \). Non vale il viceversa.
+
+\begin{defbox}{Rilassamento}{rilass}
+    Sia \( \mathcal{P} \) un problema di ottimizzazione. Si definisce rilassamento di \( \mathcal{P} \) un problema di
+    ottimizzazione \( \mathcal{R} \) ottenuto da \( \mathcal{P} \) rimuovendo vincoli e/o sostituendo la funzione
+    obiettivo \( f(\vec{x}) \) di \( \mathcal{P} \) con una sua approssimazione inferiore \( g(\vec{x}) \). Formalmente,
+    \( \mathcal{R} \) è un rilassamento di \( \mathcal{P} \) se
+    \begin{itemize}
+        \item \( F(\mathcal{P}) \subseteq F(\mathcal{R}) \),
+        \item \( g(\vec{x}) \leq f(\vec{x}) \), \( \forall \vec{x} \in F(\mathcal{P}) \).
+    \end{itemize}
+\end{defbox}
+Si verifica immediatamente che se \( \mathcal{R} \) è impossibile, ossia
+\(
+    F(\mathcal{R}) = \varnothing,
+\)
+allora anche \( \mathcal{P} \) è impossibile, cioè \( F(\mathcal{P}) = \varnothing \). Non vale il viceversa. Inoltre, è
+facile dimostrare che se \( \bar{\vec{x}} \in F(\mathcal{R}) \) è soluzione ottima per \( \mathcal{R} \), allora \(
+g(\bar{\vec{x}}) \) fornisce un limite inferiore (\textit{lower bound}) al valore ottimo di \( \mathcal{P} \).
+Formalmente risulta \( f(\vec{x^{\star}}) \geq g(\bar{\vec{x}}) \), dove
+\(
+    \vec{x^{\star}} \in F(\mathcal{P})
+\)
+è soluzione ottima di
+\(
+    \mathcal{P}.
+\)
+
+Infine, se la soluzione ottima \( \vec{x^{\star}} \in F(\mathcal{R}) \) di \( \mathcal{R} \) è ammissibile per \(
+\mathcal{P} \), con \( g(\vec{x^{\star}}) = f(\vec{x^{\star}}) \), allora \( \vec{x^{\star}} \) è soluzione ottima per
+\( \mathcal{P} \).
+
 \subsection{Ricerca}
 
-\section{Programmazione Lineare}
+Dato un problema di ottimizzazione \( \mathcal{P} \), la ricerca è il processo che consiste nel risolvere una sequenza
+finita
+\(
+    \mathcal{P}_1, \ldots, \mathcal{P}_m
+\)
+di restrizioni di \( \mathcal{P} \). L'idea alla base della ricerca è quella di aggiungere vincoli al problema di
+partenza per ottenere delle restrizioni che siano più semplici da risolvere. Le soluzioni
+delle restrizioni possono poi essere utilizzate per ottenere una soluzione di \( \mathcal{P} \).
 
-\subsection{Interpretazione Geometrica}
+\begin{defbox}{Ricerca Esaustiva}{search}
+    Siano \( \mathcal{P} \) un problema di ottimizzazione e \( \mathcal{P}_1, \ldots, \mathcal{P}_m \) una sequenza di
+    restrizioni. Si definisce ricerca esaustiva il processo di ricerca che esplora tutto lo spazio delle soluzioni
+    ammissibili di \( \mathcal{P} \). Formalmente, deve valere
+    \[
+        \bigcup_{i = 1}^m F(\mathcal{P}_i) = F(\mathcal{P}).
+    \]
+\end{defbox}
+Una ricerca non esaustiva si dice euristica. Una ricerca esaustiva permette di risolvere un problema di ottimizzazione
+\( \mathcal{P} \) trovando le soluzioni di tutte le restrizioni
+\(
+    \mathcal{P}_i
+\)
+e scegliendo quella migliore.
+
+La forma più semplice di ricerca esaustiva prende il nome di \textit{generate-and-test} e consiste nel generare
+esplicitamente tutte le soluzioni \( \vec{x} \in \mathcal{D} \) di \( \mathcal{P} \), verificare quali soddisfano i
+vincoli del problema e scegliere tra queste quella migliore. Questa strategia è applicabile in pratica solo a una classe
+ristretta di problemi di ottimizzazione e in generale non è molto efficiente.
+
+Una tipologia di ricerca migliore è quella che viene chiamata \textit{tree-search} e che sfrutta una struttura ad albero
+per esplorare lo spazio delle soluzioni ammissibili di un problema. Questo tipo di ricerca è alla base di molti
+algoritmi che vengono utilizzati nella pratica per risolvere problemi di ottimizzazione. L'idea è quella di dividere
+ricorsivamente lo spazio di ricerca delle soluzioni ammissibili di \( \mathcal{P} \), creando delle restrizioni in modo
+da formare una struttura ad albero, in cui i nodi foglia corrispondono a restrizioni sufficientemente facili da
+risolvere direttamente. Una ricerca di questo tipo è spesso combinata con il concetto di rilassamento, con l'obiettivo
+di facilitare la risoluzione delle restrizioni associate ai vari nodi dell'albero.
+
+Infine, è importante precisare che una ricerca esaustiva non è necessariamente l'approccio risolutivo migliore in tutte
+le situazioni. Esistono classi di problemi per cui ha poco senso provare a trovare una soluzione ottima, ad esempio
+perché esplorare per intero lo spazio delle soluzioni ammissibili richiederebbe un tempo di computazione troppo elevato.
+Di conseguenza, in queste situazioni è molto più utile utilizzare algoritmi euristici, il cui obiettivo è quello di
+fornire una soluzione accettabile in tempi ragionevoli.
+
+\section{Programmazione Lineare}
+La programmazione lineare costituisce uno dei paradigmi fondamentali nell'ambito dell'ottimizzazione, poichè si applica
+in modo naturale ad un'ampia classe di problemi del mondo reale, che risultano quindi facili da modellare. Nel corso del
+tempo, vari algoritmi sono stati sviluppati con l'obiettivo di risolvere in maniera efficiente problemi di
+programmazione lineare che coinvolgono un numero elevato di variabili e vincoli.
+
+Un problema di programmazione lineare (\textit{Linear Program}, LP), è un problema di ottimizzazione in cui la funzione
+obiettivo e i vincoli sono funzioni lineari. Per un problema di programmazione lineare \( \mathcal{P} \) con \( n \)
+variabili e \( m \) vincoli si può utilizzare la formulazione generale
+
+\begin{equation}
+\mathcal{P}\colon
+\setlength{\arraycolsep}{2pt}
+\left\{\begin{array}{rrcccccc}
+\min & z\,\, &=& \multicolumn{5}{c}{c_{1}\,x_{1}+\cdots+c_{n}\,x_{n}} \\[15pt]
+     &  a_{11}\,x_{1} &+ &\cdots &+ &a_{1n}\,x_{n} &\sim &b_{1}       \\
+     & \multicolumn{1}{c}{\vdots} &&\ddots&&\vdots&& \vdots           \\
+     &  a_{m1}\,x_{1} &+ &\cdots &+ &a_{mn}\,x_{n} &\sim &b_{m}       \\[15pt]
+     & \multicolumn{7}{l}{\ell_j \le x_{j} \le u_{j} \;\;\, \forall j\colon
+     1 \le j \le n}
+\end{array}\right.\\[10pt]
+\end{equation}
+dove
+\(
+\sim \,\,\in \{ \leq, =, \geq \}, \text{ } \ell_j \in \mathbb{R} \cup \{-\infty\} \text{ e } u_j \in \mathbb{R} \cup
+\{+\infty\},
+\)
+con \( c_k \in \mathbb{R} \;\, \forall k\colon 1 \leq k \leq n \), \( a_{ij} \in \mathbb{R} \;\, \forall i,j\colon 1
+\leq i \leq m,\, 1 \leq j \leq n \) e \( b_i \in \mathbb{R}\;\, \forall i\colon 1 \leq i \leq m \). Le variabili del
+problema hanno come dominio intervalli (eventualmente illimitati) di \( \mathbb{R} \) e la funzione obiettivo può essere
+scritta nella forma compatta
+\begin{equation}
+    z = \sum_{k = 1}^n c_k\,x_k\,.
+\end{equation}
+Similmente, il generico vincolo può essere scritto come
+\begin{equation}
+    \sum_{j = 1}^n a_{ij}\, x_j \sim b_i \qquad \forall i\colon 1 \leq i \leq m.
+\end{equation}
+
+La proprietà di linearità di funzione obiettivo e vincoli permette di utilizzare la teoria dell'analisi convessa come
+base nello sviluppo di algoritmi risolutivi per problemi di programmazione lineare. In aggiunta, questa proprietà
+semplifica significativamente il processo attraverso cui è possibile ottenere formulazioni alternative, tutte
+equivalenti tra loro, relativamente ad uno stesso problema di programmazione lineare.
 
 \subsection{Formulazioni Equivalenti}
+Uno stesso problema di programmazione lineare può essere espresso attraverso molteplici formulazioni differenti, tutte
+equivalenti tra loro. Inoltre, con le opportune trasformazioni, è sempre possibile passare da una formulazione
+all'altra. Per il generico problema di programmazione lineare
+\(
+    \mathcal{P}
+\)
+con \( n \) variabili e \( m \) vincoli, le due forme maggiormente utilizzate sono la forma standard e quella canonica,
+riportate di seguito.
+
+\begin{subequations}
+\hspace*{.1\textwidth}
+\begin{minipage}{.3\textwidth}
+\begin{align}\notag
+    \begin{cases}
+        \,\min & \vec{c}^{\tr} \vec{x} \\
+               & \vec{A} \vec{x} = \vec{b} \\\label{eq:LPstd}
+             & \vec{x} \ge 0
+    \end{cases}\\[7pt] \text{Forma Standard}
+\end{align}
+\end{minipage}\hspace{.1\textwidth}
+\begin{minipage}{.3\textwidth}
+    \begin{align}\notag
+    \begin{cases}
+        \,\min & \vec{c}^{\tr} \vec{x} \\
+               & \vec{A} \vec{x} \ge \vec{b} \\\label{eq:LPcanonical}
+             & \vec{x} \ge 0
+    \end{cases}\\[7pt] \text{Forma Canonica}
+\end{align}
+\end{minipage}
+\end{subequations}\\[10pt]
+dove \( \vec{x} \in \mathbb{R}^n \), con \( \vec{c} \in \mathbb{R}^n \), \( \vec{A} \in \mathbb{R}^{m\times n} \) e \(
+\vec{b} \in \mathbb{R}^m \). Le trasformazioni necessarie per passare da una forma all'altra consistono
+nell'introduzione di variabili ausiliarie e la convenienza nell'utilizzare una forma piuttosto che un'altra dipende
+dallo specifico contesto applicativo.
+
+\subsection{Interpretazione Geometrica}
+Prima di analizzare un problema di programmazione lineare dal punto di vista geometrico, è essenziale introdurre alcuni
+concetti.
+
+\begin{defbox}{Insieme Convesso}{convset}
+    Un insieme \( \mathcal{C} \) si dice convesso se
+    \(
+        \lambda x_1 + (1 - \lambda) x_2 \in \mathcal{C} \quad \forall x_1, x_2 \in \mathcal{C}, \text{ con } \lambda
+        \in [0, 1].
+    \)
+\end{defbox}
+Intuitivamente, un insieme è convesso se, per ogni coppia di punti al suo interno, il segmento che li unisce è
+completamente contenuto nell’insieme. La definizione \ref{def:convset} può essere generalizzata per un numero finito \(
+x_1, \ldots, x_k \) di punti in \( \mathcal{C} \). In questo caso, rimane definita la combinazione lineare
+convessa
+\begin{equation}
+    \sum_{i=1}^k \lambda_i x_i\,, \qquad\sum_{i=1}^k \lambda_i = 1\,.
+\end{equation}
+Questa generalizzazione permette di enunciare il seguente teorema.
+\begin{thmbox}{}{convexcombthm}
+    Un insieme \( \mathcal{C} \) è convesso se e solo se tutte le combinazioni lineari convesse di punti in \(
+    \mathcal{C} \) sono contenute in \( \mathcal{C} \).
+\end{thmbox}
+Esempi di insiemi convessi sono gli iperpiani \( \{\vec{x} \in \mathbb{R}^n \mid \vec{a}^{\tr} \vec{x} = a_0\} \), e i
+semispazi chiusi \( \{\vec{x} \in \mathbb{R}^n \mid \vec{a}^{\tr} \vec{x} \leq a_0\} \), con \( \vec{a} \in \mathbb{R}^n
+\) e \( a_0 \in \mathbb{R} \).
+\begin{thmbox}{}{convexintersection}
+    L'intersezione di un numero finito di iperpiani e semispazi chiusi è un insieme convesso che viene chiamato poliedro.
+\end{thmbox}
+Un poliedro limitato viene chiamato politopo. Di conseguenza, lo spazio delle soluzioni ammissibili di un problema di
+programmazione lineare è un insieme convesso, poichè è l'intersezione di vincoli lineari (iperpiani o semispazi chiusi).
+
+La definizione di un politopo come intersezione di iperpiani e semispazi chiusi è detta descrizione esterna. Esiste una
+modalità alternativa di definire un politopo, chiamata descrizione interna, che si basa sul concetto di vertice definito
+di seguito.
+
+\begin{defbox}{Vertice}{vertex}
+   Si dice vertice di un poliedro un punto che non può essere espresso come combinazione lineare convessa stretta di
+   altri due punti del poliedro.
+\end{defbox}
+
+Questa definizione ci permette di formalizzare la descrizione interna di un politopo.
+
+\begin{thmbox}{Descrizione Interna di un Politopo}{intdesc}
+    Siano \( \mathcal{P} \) un politopo di \( \mathbb{R}^n \) e \( \mathcal{V} = \{\vec{x}_1, \ldots, \vec{x}_k\} \)
+    l'insieme dei suoi vertici. Allora ogni punto di \( \mathcal{P} \) può essere espresso come combinazione lineare
+    convessa dei punti in \( \mathcal{V} \,\):
+    \[
+        \vec{x} \in \mathcal{P} \iff \vec{x} = \sum_{i=1}^k \lambda_i \vec{x}_i\,,\quad  \sum_{i=1}^k \lambda_i =
+        1,\;\, \lambda_i \geq 0 \;\;\, \forall i\colon 1 \leq i \leq k.
+    \]
+\end{thmbox}
+La descrizione interna di un politopo è uno strumento importante perché permette di dimostrare il teorema fondamentale
+della programmazione lineare, riportato di seguito.
+
+\begin{thmbox}{Teorema Fondamentale della Programmazione Lineare}{thmLP}
+    Consideriamo il problema di programmazione lineare \( \min\{\vec{c}^{\tr}\vec{x} \mid \vec{x} \in \mathcal{P}\} \),
+    dove \( \mathcal{P} = \{\vec{x} \in \mathbb{R}^n \mid \vec{A}\vec{x} \leq \vec{b}\} \) è il politopo che rappresenta
+    la regione ammissibile, con \( \vec{A} \in \mathbb{R}^{m\times n}, \, \vec{b} \in \mathbb{R}^m \) e \( \vec{c} \in
+    \mathbb{R}^n \). Allora, se il problema ammette ottimo finito, esiste almeno un vertice di \( \mathcal{P} \) che è
+    soluzione ottima.
+\end{thmbox}
+
+Questo teorema ci fornisce un modo concreto per risolvere un problema di programmazione lineare, che consiste nel limitare
+la ricerca della soluzione ottima all'insieme dei vertici del politopo che definisce la regione ammissibile.
+
+Il teorema può essere esteso al caso generale di problemi di programmazione lineare in cui la regione ammissibile è un
+poliedro (con almeno un vertice), e non necessariamente un politopo. L'ipotesi sull'esistenza della soluzione ottima
+deve comunque valere, per evitare che il problema possa risultare illimitato o impossibile.
 
 \subsection{Algoritmo del Simplesso}
+L'algoritmo del simplesso è uno degli algoritmi maggiormente impiegati nell'ambito dell'ottimizzazione per risolvere
+problemi di programmazione lineare. \`E un algoritmo iterativo che cerca di sfruttare il teorema fondamentale della
+programmazione lineare in modo intelligente, con l'obiettivo ridurre il numero dei vertici da ispezionare per trovare la
+soluzione ottima. L'idea è quella di partire da un vertice arbitrario del poliedro che definisce la regione ammissibile
+e di muoversi ad ogni iterazione in un vertice adiacente non peggiore, relativamente al valore della funzione obiettivo.
+
+\`E importante precisare che nonostante l'algoritmo del simplesso scelga di spostarsi tra i vertici in modo
+intelligente, non c'è alcuna garanzia che il vertice corrispondente alla soluzione ottima venga trovato prima di aver
+ispezionato tutti gli altri vertici del politopo. Per questo motivo, si può dimostrare che la complessità computazionale
+al caso peggiore è esponenziale.
+
 
 \subsection{Dualità}
 
