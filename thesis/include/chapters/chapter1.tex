@@ -1,1 +1,94 @@
 \chapter{Nozioni Fondamentali}
+
+L'obiettivo di questo capitolo è quello di presentare i concetti di base che vengono utilizzati nel seguito di questo
+lavoro e, più in generale, nell'ambito dell'ottimizzazione matematica.
+
+\section{Introduzione}
+Nel corso della sua esistenza, l’uomo ha sempre dovuto affrontare e risolvere una grande varietà di problemi. Con il
+passare del tempo, le nostre capacità si sono evolute e gli strumenti a nostra disposizione sono migliorati,
+permettendoci di gestire problemi di complessità sempre maggiore. Di conseguenza, oggi non ci accontentiamo più di
+risolvere un problema trovando una soluzione arbitraria, ma aspiriamo ad ottimizzare, cioè a identificare la soluzione
+migliore possibile, sulla base di criteri specifici.
+
+L'ottimizzazione è ormai parte integrante di tutti gli ambiti che richiedano di risolvere problemi decisionali. Nella
+pratica, risolvere un problema decisionale significa assegnare valori alle variabili che lo caratterizzano. In molti
+casi, la scelta di questi valori è limitata da un insieme di vincoli che devono essere soddisfatti. L'obiettivo è quello
+di ottimizzare una grandezza specifica. Questa grandezza e i vincoli da soddisfare possono spesso essere rappresentati
+come funzioni delle variabili coinvolte, permettendoci di definire il problema utilizzando un modello matematico. La
+formulazione di un modello dovrebbe essere sufficientemente complessa da rappresentare accuratamente il problema cui si
+riferisce e, allo stesso tempo, abbastanza semplice da renderlo trattabile con gli strumenti risolutivi disponibili.
+
+L'ottimizzazione è spesso un processo iterativo, in cui il modello matematico di riferimento viene continuamente
+raffinato, con l'obiettivo di ottenere soluzioni sempre più accurate, in relazione al problema del mondo reale a cui è
+associato.
+
+Oggi siamo in grado di ottimizzare problemi che coinvolgono un numero di variabili e di vincoli molto elevato. Tuttavia,
+esistono classi di problemi che non posso essere risolti all'ottimo in un tempo ragionevole e che hanno determinato lo
+sviluppo di algoritmi euristici, con la finalità di ottenere soluzioni accettabili in tempi contenuti.
+
+
+\section{Problemi di Ottimizzazione}
+
+un problema di ottimizzazione \( \mathcal{P} \) può essere definito con la formulazione generale
+\begin{equation}\label{eq:opt_prob}
+    \mathcal{P}\colon
+    \begin{cases}
+        \text{$\min$ (or $\max$)} & f(\vec{x}) \\
+                                  & \mathcal{S} \\
+                                  & \vec{x} \in \mathcal{D}
+    \end{cases}
+\end{equation}
+dove
+\(
+    f(\vec{x})
+\)
+è una funzione a valori reali nelle variabili
+\(
+    \vec{x} = [x_1 \, \ldots \, x_n] \in \mathcal{D} = D_1 \times \dots \times D_n,
+\)
+con
+\(
+    x_j \in D_j \;\; \forall j \colon 1 \leq j \leq n
+\)
+e
+\(
+    \mathcal{S}
+\)
+è un insieme finito di vincoli. Formalmente, un vincolo
+\(
+    c \in \mathcal{S}
+\)
+è una funzione che coinvolge un sottoinsieme delle variabili del problema e che può assumere i valori vero o falso,
+corrispondenti alle condizioni di vincolo soddisfatto o violato, rispettivamente.
+
+Calcolare il massimo di una funzione
+\(
+    f(\vec{x})
+\)
+è equivalente a calcolare il minimo della funzione
+\(
+    -f(\vec{x})
+\). Infatti, i due valori coincidono, a meno del segno, e si ottengono nello stesso punto
+\(
+    \bar{\vec{x}}
+\).
+Di conseguenza, nel seguito possiamo limitarci a studiare i problemi di minimo senza perdere di generalità. Tutte le
+considerazioni saranno valide, eventualmente con opportune modifiche, anche per i problemi di massimo.
+
+\subsection{Restrizioni e Rilassamenti}
+
+\subsection{Ricerca}
+
+\section{Programmazione Lineare}
+
+\subsection{Interpretazione Geometrica}
+
+\subsection{Formulazioni Equivalenti}
+
+\subsection{Algoritmo del Simplesso}
+
+\subsection{Dualità}
+
+\subsection{Rilassamento Lagrangiano}
+
+\section{Programmazione Lineare Intera}

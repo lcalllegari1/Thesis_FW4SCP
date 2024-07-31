@@ -1,5 +1,16 @@
 \documentclass[a4paper, 12pt, twoside, onecolumn, openright, final]{memoir}
 
+\input{config/packages}
+\input{config/colors}
+\input{config/layout}
+\input{config/settings}
+
+\input{config/fonts}
+
+\usepackage{lipsum}
+
+
+\checkandfixthelayout
 \begin{document}
-    \include{include/chapters/chapter1}
+    \input{include/chapters/chapter1}
 \end{document}
