@@ -27,8 +27,7 @@ esistono classi di problemi che non posso essere risolti all'ottimo in un tempo 
 sviluppo di algoritmi euristici, con la finalità di ottenere soluzioni accettabili in tempi contenuti.
 
 
-\section{Problemi di Ottimizzazione}
-
+\section{Problemi di Ottimizzazione}\label{sec:opt_prob}
 Un problema di ottimizzazione \( \mathcal{P} \) può essere definito con la formulazione generale
 \begin{equation}\label{eq:opt_prob}
     \mathcal{P}\colon
@@ -44,7 +43,7 @@ dove
 \)
 è una funzione a valori reali nelle variabili
 \(
-    \vec{x} = [x_1 \, \ldots \, x_n] \in \mathcal{D} = D_1 \times \dots \times D_n,
+    \vec{x} = [x_1 \, \ldots \, x_n]^{\tr} \in \mathcal{D} = D_1 \times \dots \times D_n,
 \)
 con
 \(
@@ -97,7 +96,7 @@ Inoltre, nel caso particolare di un dominio
 \(
     \mathcal{D}
 \)
-che sia un insieme discreto e finito, si parla di \textit{ottimizzazione combinatoria}
+che sia un insieme discreto e finito, si parla di \textit{ottimizzazione combinatoria}.
 \begin{defbox}{Soluzione Ottima}{optsol}
     Sia \( \mathcal{P} \) un problema di ottimizzazione della forma presentata in \eqref{eq:opt_prob}. Una soluzione
     ammissibile \( \vec{x^{\star}} \in F(\mathcal{P}) \) si dice ottima per \( \mathcal{P} \) se
@@ -383,9 +382,219 @@ intelligente, non c'è alcuna garanzia che il vertice corrispondente alla soluzi
 ispezionato tutti gli altri vertici del politopo. Per questo motivo, si può dimostrare che la complessità computazionale
 al caso peggiore è esponenziale.
 
-
 \subsection{Dualità}
+All'inizio della sezione \ref{sec:opt_prob} abbiamo argomentato che per dichiarare risolto un problema di
+ottimizzazione, non è sufficiente trovare una soluzione ottima, ma è necessario fornire una dimostrazione
+che attesti l'ottimalità di tale soluzione, relativamente al problema considerato.
+
+Per i problemi di programmazione lineare esiste un modo elegante e rigoroso per certificare l'ottimalità di una
+soluzione, che utilizza un problema di ottimizzazione di supporto chiamato problema duale. Il problema duale è ottenuto
+a partire dal problema iniziale che, in questo contesto, prende il nome di problema primale. L'idea di base è quella di
+combinare i vincoli del problema primale per costruire una limitazione al valore della sua funzione obiettivo. Questo
+concetto può essere compreso meglio attraverso un esempio di carattere generale, che viene riportato di seguito.
+
+Sia $\mathcal{P}$ un problema di programmazione lineare con $n$ variabili e
+$m$ vincoli. Senza perdita di generalità, possiamo assumere che
+$\mathcal{P}$ sia espresso nella forma standard \eqref{eq:LPstd} oppure in
+quella canonica \eqref{eq:LPcanonical}. Ad esempio, sia $\mathcal{P}$ della
+forma
+\begin{equation}\label{eq:canonicalduality}
+    \mathcal{P}\colon
+    \begin{cases}
+        \,\min & \vec{c}^{\tr} \vec{x} \\
+               & \vec{A} \vec{x} \ge \vec{b} \\
+             & \vec{x} \ge 0
+    \end{cases}\\[5pt]
+\end{equation}
+dove $\vec{x} \in \mathbb{R}^n$, con $\vec{c} \in \mathbb{R}^n,\ \vec{A} \in \mathbb{R}^{m \times n}$ e $\vec{b} \in
+\mathbb{R}^m$. Supponiamo che \( \vec{x^{\star}} \) sia la soluzione ottima candidata. Per certificare l'ottimalità
+dobbiamo dimostrare che non esistono soluzioni migliori. Nel caso di un problema di minimo, questo significa verificare
+che \( \vec{x^{\star}} \) è la soluzione di costo minimo.
+
+Per la generica soluzione ammissibile \( \vec{x} \in F(\mathcal{P}) \) vale \( \vec{A}\vec{x} \geq \vec{b} \). Allora,
+introducendo un vettore \( \vec{u} \in \mathbb{R}^m, \vec{u} \geq 0 \), chiamato vettore di moltiplicatori, risulta che
+\begin{equation}\label{eq:u}
+    \vec{u}^{\tr}\vec{A}\vec{x} \geq \vec{u}^{\tr}\vec{b}.
+\end{equation}
+Inoltre, possiamo costruire \( \vec{u} \) in modo che valga \( \vec{c}^{\tr} \geq \vec{u}^{\tr} \vec{A} \), da cui,
+usando la \eqref{eq:u}, si trova
+\begin{equation}\label{eq:cxuax}
+    \vec{c}^{\tr}\vec{x} \geq \vec{u}^{\tr}\vec{A}\vec{x} \geq \vec{u}^{\tr}\vec{b} \quad \forall \vec{x} \in
+    F(\mathcal{P}),
+\end{equation}
+essendo \( \vec{x} \geq 0 \). In altre parole, possiamo utilizzare \( \vec{u} \) per creare una combinazione lineare dei
+vincoli di \( \mathcal{P} \) che costituisca una limitazione inferiore al valore della funzione obiettivo. A questo
+punto, dobbiamo scegliere \( \vec{u} \) in modo da ottenere la limitazione inferiore migliore, cioè quella più alta
+possibile. In effetti, questo significa risolvere il problema di programmazione lineare
+\begin{equation}\label{eq:dual}
+    \mathcal{D}\colon
+    \begin{cases}
+        \,\max & \vec{u}^{\tr} \vec{b} \\
+               & \vec{u}^{\tr}\vec{A} \le \vec{c}^{\tr} \\
+             & \vec{u} \ge 0
+    \end{cases}\\[7pt]
+\end{equation}
+nelle variabili \( \vec{u} = [u_1 \ldots u_m]^{\tr} \in \mathbb{R}^m \), con \( \mathcal{D} \) che prende il nome di
+problema duale di \( \mathcal{P} \).
+Con qualche modifica, il ragionamento si applica identicamente a problemi espressi nella forma standard. In maniera del
+tutto simmetrica, può essere applicato a problemi di massimo.
+
+Le disuguaglianze \eqref{eq:u} e \eqref{eq:cxuax} hanno una conseguenza immediata, riassunta nel teorema riportato di
+seguito, detto teorema della dualità debole.
+
+\begin{thmbox}{Dualità Debole}{weakduality}
+    Siano \( \mathcal{P} \) un problema di programmazione lineare come in \eqref{eq:canonicalduality} e \( \mathcal{D}
+    \) il suo problema duale, come in \eqref{eq:dual}. Allora, per le generiche soluzioni ammissibili \( \vec{x} \text{
+    e } \vec{u} \) di \( \mathcal{P} \) e \( \mathcal{D} \), rispettivamente, risulta
+    \[
+        \vec{c}^{\tr} \vec{x} \geq \vec{b}^{\tr}\vec{u}.
+    \]
+    Inoltre, se vale
+    \(
+        \vec{c}^{\tr} \vec{x} = \vec{b}^{\tr}\vec{u},
+    \)
+    allora \( \vec{x} \) e \( \vec{u} \) sono soluzioni ottime di \( \mathcal{P} \) e \( \mathcal{D} \),
+    rispettivamente.
+\end{thmbox}
+In altre parole, per un problema di minimo, il costo di una soluzione ammissibile del problema primale è sempre maggiore
+o uguale al costo di una soluzione ammissibile del problema duale. Quando i due costi coincidono, allora le due
+soluzioni sono ottime. Naturalmente, il teorema è valido simmetricamente per problemi di massimo.
+
+Infine, enunciamo il teorema della dualità forte, che fornisce un modo concreto di certificare l'ottimalità della
+soluzione di un problema di programmazione lineare.
+
+\begin{thmbox}{Dualità Forte}{strongduality}
+    Consideriamo una coppia primale - duale di problemi di programmazione
+    lineare. Allora, se uno dei due ammette ottimo finito, anche l'altro
+    ammette ottimo finito e il valore ottimo della funzione obiettivo è lo
+    stesso per entrambi.
+\end{thmbox}
+Di conseguenza, per verificare l'ottimalità della soluzione \( \vec{x^{\star}} \) del problema primale \( \mathcal{P}
+\), è sufficiente determinare una soluzione ammissibile \( \vec{u^{\star}} \) del problema duale \( \mathcal{D} \), in
+modo che risulti
+\begin{equation}\label{eq:optcond}
+    \vec{c}^{\tr}\vec{x^{\star}} = \vec{b}^{\tr}\vec{u^{\star}}.
+\end{equation}
+Se una tale soluzione \( \vec{u^{\star}} \) esiste, allora \( \vec{x^{\star}} \) è ottima per \( \mathcal{P} \) e \(
+\vec{u^{\star}} \) è ottima per \( \mathcal{D} \). Al contrario, l'inesistenza di \( \vec{u^{\star}} \) ammissibile per
+\( \mathcal{D} \) che soddisfi la \eqref{eq:optcond} dimostra che \( \vec{x^{\star}} \) non è ottima per \( \mathcal{P}
+\).
 
 \subsection{Rilassamento Lagrangiano}
 
+In alcune situazioni la formulazione di un problema di programmazione lineare può essere abbastanza complessa da
+impedire l'applicazione diretta di un algoritmo risolutivo. In questi casi può essere utile provare a trasformarla in
+una formulazione differente, con l'obiettivo di ottenere un problema più facile da risolvere. Alcune volte il problema
+associato alla formulazione alternativa è equivalente a quello iniziale e ha lo stesso valore ottimo. Altre volte non siamo
+così fortunati, e le due formulazioni non sono equivalenti. Di conseguenza, la formulazione alternativa non è sempre
+sufficiente per risolvere direttamente il problema di partenza, ma risulta comunque utile per ottenere delle limitazioni
+alla sua funzione obiettivo.
+
+L'intuizione alla base del rilassamento Lagrangiano è quella di semplificare un problema rimuovendo alcuni dei suoi
+vincoli e aggiungendo un contributo alla funzione obiettivo. Questo contributo, che prende il nome di penalizzazione
+Lagrangiana, è ottenuto a partire dai vincoli eliminati e serve a peggiorare il valore della funzione obiettivo per
+soluzioni che non li soddisfano.
+A questo punto possiamo formalizzare questo concetto, limitandoci ad analizzare gli aspetti fondamentali che riflettono
+gli obiettivi di questo lavoro.
+
+Sia $\mathcal{P}$ un generico problema di programmazione lineare, espresso
+nella forma canonica
+\begin{equation}
+    \mathcal{P}\colon
+    \begin{cases}
+        \,\min & \vec{c}^{\tr} \vec{x} \\
+               & \vec{A} \vec{x} \ge \vec{b} \\
+             & \vec{x} \ge 0
+    \end{cases}
+\end{equation}
+dove $\vec{x} \in \mathbb{R}^n$, con $\vec{c} \in \mathbb{R}^n,\ \vec{A}
+\in \mathbb{R}^{m \times n}$ e $\vec{b} \in \mathbb{R}^m$. Introduciamo un vettore \( \vec{u} \in \mathbb{R}^m, \vec{u}
+\geq 0\) di moltiplicatori, chiamati moltiplicatori di Lagrange, e definiamo la funzione
+\begin{equation}
+    L(\vec{x}, \vec{u}) = \vec{c}^{\tr} \vec{x} + \vec{u}^{\tr}(\vec{b} - \vec{A}\vec{x}),
+\end{equation}
+che prende il nome di funzione Lagrangiana di \( \mathcal{P} \). Questa funzione ci permette di definire la famiglia di
+problemi Lagrangiani della forma
+\begin{equation}
+    \mathcal{L}(\vec{u})\colon
+    \begin{cases}
+        \min & \vec{c}^{\tr} \vec{x} + \vec{u}^{\tr}(\vec{b} - \vec{A}\vec{x}) = L(\vec{x}, \vec{u})\\
+             & \vec{x} \geq 0
+    \end{cases}
+\end{equation}
+che sono sempre un rilassamento di \( \mathcal{P} \) e quindi forniscono un limite inferiore al valore ottimo della sua
+funzione obiettivo. Utilizzando una forma più compatta, possiamo scrivere
+\begin{equation}
+    \mathcal{L}(\vec{u}) = \min_{\vec{x} \,\geq\, 0} \,L(\vec{x}, \vec{u}) = \min_{\vec{x} \,\geq\, 0}\,\{\vec{c}^{\tr}
+    \vec{x} + \vec{u}^{\tr}(\vec{b} - \vec{A}\vec{x}) \},
+\end{equation}
+con \( \mathcal{L}(\vec{u}) \) che viene chiamata funzione duale di \( \mathcal{P} \). Per trovare la migliore
+limitazione inferiore al valore ottimo di \( \mathcal{P} \), dobbiamo risolvere all'ottimo il problema duale Lagrangiano
+\begin{equation}
+    \mathcal{D}\colon
+    \begin{cases}
+        \max & \mathcal{L}(\vec{u}) \\
+             & \vec{u} \geq 0
+    \end{cases}
+\end{equation}
+Inoltre, si può dimostrare che se \( \mathcal{P} \) ammette ottimo finito, allora il valore ottimo della sua funzione
+obiettivo coincide con il costo di una soluzione ottima del problema duale Lagrangiano \( \mathcal{D} \). Questo
+risultato costituisce la base teorica dell'algoritmo risolutivo che viene implementato nel capitolo \ref{chap:impl} e
+che si basa sul metodo di Frank-Wolfe, approfondito nel seguito. In particolare, risolveremo il problema duale
+Lagrangiano e, sfruttando la proprietà appena presentata, saremo in grado di trovare una limitazione inferiore al valore
+ottimo del problema iniziale.
+
 \section{Programmazione Lineare Intera}
+Il paradigma della programmazione lineare intera è un estensione della programmazione lineare che aggiunge la
+possibilità di vincolare le variabili ad assumere valori interi. Il generico problema di programmazione lineare intera
+\( \mathcal{P} \) con \( n \) variabili e \( m \) vincoli può essere definito con la formulazione generale
+\begin{equation}
+\mathcal{P}\colon
+\setlength{\arraycolsep}{2pt}
+\left\{\begin{array}{rrcccccc}
+\min & z\,\, &=& \multicolumn{5}{c}{c_{1}\,x_{1}+\cdots+c_{n}\,x_{n}} \\[15pt]
+     &  a_{11}\,x_{1} &+ &\cdots &+ &a_{1n}\,x_{n} &\sim &b_{1}       \\
+     & \multicolumn{1}{c}{\vdots} &&\ddots&&\vdots&& \vdots           \\
+     &  a_{m1}\,x_{1} &+ &\cdots &+ &a_{mn}\,x_{n} &\sim &b_{m}       \\[15pt]
+     & \multicolumn{7}{l}{\ell_j \le x_{j} \le u_{j} \;\;\, \forall j\colon 1 \le j \le n} \\[5pt]
+     & \multicolumn{7}{l}{x_j \in \mathbb{Z} \;\;\, \forall j \in J \subseteq N = \{ 1, \ldots, n \}}
+\end{array}\right.\\[10pt]
+\end{equation}
+dove
+\(
+\sim \,\,\in \{ \leq, =, \geq \}, \text{ } \ell_j \in \mathbb{R} \cup \{-\infty\} \text{ e } u_j \in \mathbb{R} \cup
+\{+\infty\},
+\)
+con \( c_k \in \mathbb{R} \;\, \forall k\colon 1 \leq k \leq n \), \( a_{ij} \in \mathbb{R} \;\, \forall i,j\colon 1
+\leq i \leq m,\, 1 \leq j \leq n \) e \( b_i \in \mathbb{R}\;\, \forall i\colon 1 \leq i \leq m \).
+Quando tutte le variabili sono vincolate ad assumere valori interi, ossia \( J = N \), il problema è detto di
+programmazione lineare intera pura. Se invece il vincolo di interezza è applicato solo ad alcune variabili, cioè \( J
+\subset N \), il problema è detto di programmazione lineare intera mista. Naturalmente quando \( J = \varnothing \) il
+problema diventa un problema di programmazione lineare.
+
+La possibilità di vincolare le variabili ad assumere valori interi permette di modellare molti più problemi del mondo
+reale di quanto non si riesca a fare con la semplice programmazione lineare. Il prezzo da pagare è una difficoltà
+maggiore nel processo risolutivo. Infatti, per un problema di programmazione lineare intera non valgono molte delle
+considerazioni che abbiamo fatto per la programmazione lineare. L'aver introdotto vincoli di interezza non
+garantisce più la convessità della regione ammissibile, e neanche le proprietà che costituiscono il fondamento per
+l'algoritmo del simplesso. Per questo motivo, nel tempo sono stati sviluppati ulteriori algoritmi, specificatamente
+ideati per gestire i vincoli di interezza.
+
+\subsection{Rilassamento Lineare}
+
+Nel risolvere problemi di programmazione lineare intera, è molto importante utilizzare il concetto di rilassamento. Il
+rilassamento più intuitivo e naturale per un problema di programmazione lineare intera è il rilassamento lineare. L'idea
+è quella di considerare il problema iniziale, ma senza i vincoli di interezza per le variabili che lo richiedono.
+Questa semplificazione trasforma il problema iniziale in un problema di programmazione lineare che quindi può essere
+risolto con tutti gli strumenti di cui abbiamo già discusso. L'utilità del rilassamento lineare dipende dallo specifico
+problema. In alcuni casi il rilassamento è abbastanza forte da fornire una limitazione utile per la funzione obiettivo
+del problema iniziale. Nelle situazioni in cui è invece molto debole, viene spesso combinato con i piani di taglio, con
+l'obiettivo di ottenere un rilassamento più forte, in grado di fornire una limitazione migliore. Un piano di taglio è un
+vincolo che è violato dalla soluzione ottima corrente del rilassamento lineare, ma soddisfatto dalle soluzioni
+ammissibili del problema di partenza. Geometricamente si può visualizzare proprio come un taglio all'interno della
+regione ammissibile del rilassamento, che però non interseca la regione ammissibile del problema di partenza, ottenuta
+considerando i vincoli di interezza. Questo vincolo viene aggiunto al rilassamento lineare per ottenere una limitazione
+inferiore migliore. Il processo di aggiunta di piani di taglio può essere iterato per migliorare la soluzione di un
+rilassamento lineare e ottenere una limitazione migliore al valore ottimo del problema di partenza. In effetti, questo
+è proprio il meccanismo con cui i rilassamenti lineari vengono utilizzati nell'algoritmo Branch \& Cut (B\&C),
+specificatamente ideato per risolvere problemi di programmazione lineare intera.

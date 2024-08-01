@@ -1,0 +1,99 @@
+\chapter{Set-Covering}
+
+In questo capitolo viene presentato il problema del Set-Covering, che è il problema di riferimento per l'algoritmo
+sviluppato nel prossimo capitolo.
+
+\section{Formulazione del Problema}
+
+Consideriamo un insieme \( \mathcal{I} \) di \( m \) elementi e una famiglia \( \mathcal{F} = \{F_1, \ldots, F_n\} \) di
+sottoinsiemi di \( \mathcal{I} \). Il problema del Set-Covering richiede di trovare il più piccolo insieme
+\(
+    \mathcal{F}^{\,\text{\raisebox{2pt}{$\star$}}} \!\subseteq \mathcal{F}
+\)
+in grado di coprire tutti gli elementi in \( \mathcal{I} \). Formalmente, si richiede che
+\begin{equation}
+    \bigcup_{F_j \, \in \, \mathcal{F^{\,\text{\raisebox{2pt}{$\star$}}}}} \!\!F_j = \mathcal{I}
+\end{equation}
+Questo problema può essere modellato utilizzando la programmazione lineare intera: introduciamo una variabile binaria
+per ciascun elemento \( F_j \in \mathcal{F} \), che rappresenta l'appartenenza di \( F_j \) a
+\(
+    \mathcal{F}^{\,\text{\raisebox{2pt}{$\star$}}}.
+\)
+Nello specifico, definiamo
+\begin{equation}
+    x_j =
+    \begin{cases}
+        1, & \text{se } F_j \in \mathcal{F}^{\,\text{\raisebox{2pt}{$\star$}}} \\
+        0, & \text{altrimenti}
+    \end{cases} \qquad \forall j\colon 1 \leq j \leq n.
+\end{equation}
+A questo punto, la formulazione del problema segue immediatamente:
+\begin{equation}\label{eq:scp1}
+    \begin{array}{ll}
+        \hspace*{0.3cm}\min  \displaystyle\sum_{j=1}^{n} x_j \\[20pt]
+        \hspace*{0.3cm}\displaystyle\sum_{j\colon i \,\in\, F_j} \!\! x_j \geq 1 & \forall i \in \mathcal{I} \\[20pt]
+        \hspace*{0.3cm}x_j \in \{0, 1\} & \forall j\colon 1\leq j\leq n
+    \end{array}
+\end{equation}
+Si può facilmente osservare che i limiti superiori per le variabili \( x_j \) sono ridondanti, poiché non c'è mai
+convenienza nel selezionare la stessa famiglia \( F_j \) più di una volta. Di conseguenza, possiamo rilassare il vincolo
+sulle variabili, e assumere semplicemente che siano intere non negative.
+
+Una formulazione equivalente a quella presentata in \ref{eq:scp1}, si ottiene introducendo i
+parametri \( a_{ij} \) in modo tale che
+\begin{equation}
+    a_{ij} =
+    \begin{cases}
+        1, & \text{se } i \in F_j \\
+        0, & \text{altrimenti}
+    \end{cases} \qquad \forall i \in \mathcal{I} ,\;\,\forall j\colon 1 \leq j \leq n
+\end{equation}
+A questo punto, possiamo definire la formulazione alternativa
+\begin{equation}\label{eq:scp2}
+    \text{SCP}\colon
+    \begin{cases}
+        \hspace*{0.3cm}\min  \displaystyle\sum_{j=1}^{n} x_j \\[20pt]
+        \hspace*{0.3cm}\displaystyle\sum_{j=1}^n a_{ij}\,x_j \geq 1 & \forall i \in \mathcal{I} \\[20pt]
+        \hspace*{0.3cm}x_j \geq 0,\; x_j \in \mathbb{Z} & \forall j\colon 1 \leq j \leq n
+    \end{cases}
+\end{equation}
+Questa formulazione è particolarmente utile nel seguito di questo lavoro e può essere scritta in maniera compatta
+introducendo una matrice \( \vec{A} = [a_{ij}] \) e i vettori
+\[
+    \vec{x} = [x_1, \ldots, x_n]^{\tr} \in \mathbb{R}^n, \quad \vec{c} = [1, \ldots, 1]^{\tr} \in \mathbb{R}^n
+    ,\quad b = [1, \ldots, 1]^{\tr} \in \mathbb{R}^m.
+\]
+Si ottiene quindi la formulazione compatta
+\begin{equation}\label{eq:scp3}
+    \text{SCP}\colon
+    \begin{cases}
+        \hspace*{0.3cm}\min & \vec{c}^{\tr}\vec{x}\\
+        \hspace*{0.3cm}&\vec{A}\vec{x} \geq \vec{b} \\
+        \hspace*{0.3cm}&\vec{x} \geq 0,\; x_j \in \mathbb{Z} \quad \forall j\colon 1 \leq j \leq n
+    \end{cases}
+\end{equation}
+
+\subsection{Rilassamento Lineare}
+
+Il rilassamento lineare del SCP rimuove il vincolo di interezza, e consente alle variabili di assumere valori reali non
+negativi. In questo modo, la formulazione \ref{eq:scp3} diventa quella di un problema di programmazione lineare in forma
+canonica:
+\begin{equation}\label{eq:scp4}
+    \begin{array}{ll}
+        \min & \vec{c}^{\tr}\vec{x}\\
+        &\vec{A}\vec{x} \geq \vec{b} \\
+        &\vec{x} \geq 0
+    \end{array}
+\end{equation}
+Naturalmente, una soluzione del rilassamento lineare non è necessariamente ammissibile per il problema di partenza.
+Inoltre, per come è definito, il rilassamento lineare non ha nessun significato in relazione al problema del
+Set-Covering. Una soluzione in cui una variabile compare con un valore non intero non ha senso, poichè le variabili del
+problema iniziale sono state introdotte con un signficato che dipende fortemente dalla presenza del vincolo di
+interezza. Infine, anche per il rilassamento lineare rimane valida la considerazione fatta in precedenza, relativamente
+al limite superiore per le variabili, che le vincola implicitamente ad assumere valori nell'intervallo \( [0, 1] \).
+
+\subsection{Problema Duale}
+
+\subsection{Rilassamento Lagrangiano}
+
+\section{Esempi e Applicazioni}
