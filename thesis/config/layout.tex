@@ -62,62 +62,36 @@
     \thispagestyle{empty}
 }
 
-\newcounter{defthmcnt}[chapter]
-
-\NewTcbTheorem[
-    number within = chapter,
-    use counter = defthmcnt
-] {defbox}{Definizione}{
-    enhanced,
+\NewTcbTheorem[number within = chapter]{defbox}{Definizione}{
+    sharp corners,
+    fonttitle = {\large\color{primary}\alt\fontseries{mid}\selectfont},
     sharp corners,
     colframe = primary,
-    colback = primary!15,
+    colback = white,
     boxrule = 0pt,
-    toprule = 2pt,
-    bottomrule = 2pt,
+    leftrule = 2.5pt,
+    valign = center,
+    attach title to upper = {\par},
     separator sign = .,
-    top = 4mm,
-    bottom = 3mm,
-    fonttitle = \alt\fontseries{mid}\selectfont,
-    attach boxed title to top text left = {yshift=-3mm},
-    boxed title style = {
-        sharp corners,
-        left = 1pt,
-        right = 1pt,
-        top = 1pt,
-        bottom = 1pt,
-        boxrule = 1pt,
-        colback = primary,
-        colframe = secondary,
-    },
     breakable,
+    title style = {
+        left = 50mm,
+    }
 }{def}
 
-\NewTcbTheorem[
-    number within = chapter,
-    use counter = defthmcnt
-] {thmbox}{Teorema}{
-    enhanced,
+\NewTcbTheorem[number within = chapter]{thmbox}{Teorema}{
+    sharp corners,
+    fonttitle = {\large\color{primary}\alt\fontseries{mid}\selectfont},
     sharp corners,
     colframe = primary,
-    colback = primary!15,
+    colback = white,
     boxrule = 0pt,
-    toprule = 2pt,
-    bottomrule = 2pt,
+    leftrule = 2.5pt,
+    valign = center,
+    attach title to upper = {\par},
     separator sign = .,
-    top = 4mm,
-    bottom = 3mm,
-    fonttitle = \alt\fontseries{mid}\selectfont,
-    attach boxed title to top text left = {yshift=-3mm},
-    boxed title style = {
-        sharp corners,
-        left = 1pt,
-        right = 1pt,
-        top = 1pt,
-        bottom = 1pt,
-        boxrule = 1pt,
-        colback = primary,
-        colframe = secondary,
-    },
     breakable,
+    title style = {
+        left = 50mm,
+    }
 }{thm}
